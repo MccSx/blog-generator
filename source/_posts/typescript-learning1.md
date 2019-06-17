@@ -57,3 +57,44 @@ console.log( (str2 as string).split('') )  // => pass
 ```
 有两种形式：1.`<string>str`  2.`str2 as string`
 通过类型断言这种方式可以告诉编译器，“相信我，我知道自己在干什么”。类型断言好比其它语言里的类型转换，但是不进行特殊的数据检查和解构。它没有运行时的影响，只是在编译阶段起作用。TypeScript会假设你，程序员，已经进行了必须的检查。
+
+------
+# 接口
+接口就是用代码描述一个对象**必须**有什么属性或者方法，但是有没有其他属性或方法就不管。
+```ts
+interface Human {
+    name: string;
+    age: number;
+}
+
+let jack: Human = {name: 'jack', age: 18}
+```
+接口用关键字`interface`来声明，例如上述代码，如果`jack`对象声明时少了`name`或者`age`属性，就会报错。
+```ts
+interface Head {
+    eye: number;
+    nose: number;
+}
+interface Human {
+    readonly name: string;
+    age: number;
+    head: Head;
+    likedGame?: Array<string>
+    say(word: string) : void
+}
+
+let jsck: Human = {
+    name: 'jack',
+    age: 18,
+    head: {eye: 2, nose: 1},
+    say(word: string) {
+        console.log(word)
+    }
+}
+
+jack.name = 'gavin'  // => error
+```
+- 如果一个接口内定义了必须还有对象，就类似上述再声明另一个接口；
+- 如果一个接口内定义了必须有一个方法，就类似上述在接口内部直接定一个方法；
+- 以上述代码为例，在接口定义时，在某一个属性前加一个`readonly`关键字，后面如果对`jsck`的`name`属性做修改就会**报错**；
+- 如果定义一个接口时，在某个属性后面加一个`？`，表述对象声明时可以不声明这个对象，类似上述代码种的`likedGame`；
