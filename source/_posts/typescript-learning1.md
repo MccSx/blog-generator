@@ -60,6 +60,7 @@ console.log( (str2 as string).split('') )  // => pass
 
 ------
 # 接口
+## 接口基础
 接口就是用代码描述一个对象**必须**有什么属性或者方法，但是有没有其他属性或方法就不管。
 ```ts
 interface Human {
@@ -98,3 +99,35 @@ jack.name = 'gavin'  // => error
 - 如果一个接口内定义了必须有一个方法，就类似上述在接口内部直接定一个方法；
 - 以上述代码为例，在接口定义时，在某一个属性前加一个`readonly`关键字，后面如果对`jsck`的`name`属性做修改就会**报错**；
 - 如果定义一个接口时，在某个属性后面加一个`？`，表述对象声明时可以不声明这个对象，类似上述代码种的`likedGame`；
+
+## 接口描述函数
+```ts
+interface SearchFunc {
+    (a: string, b: string): boolean;
+}
+
+let searchF = function (c: string, d: string): boolean {
+    // ...
+}
+```
+由如上述代码定义一个描述函数的接口，注意：上述a、b并不与c、d有什么关系。
+
+如果接口描述的函数，这个函数内也有一个属性也是函数？代码如下：
+```ts
+interface 二则运算 {
+    (a: number, b: number): number;
+    逆运算(a: number, b: number): number;
+}
+let fn = (): 二则运算 => {
+    let x: any = function(a: number, b: number): number {
+        return a + b;
+    };
+
+    x.逆运算 = function(a: number, b: number): number {
+        return a - b;
+    };
+    return x;
+}
+
+let add: 二则运算 = fn();
+```
