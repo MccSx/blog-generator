@@ -57,6 +57,21 @@ let jack = new Human('jack', 18)
 console.log(jack.secret)  // ==> 报错
 ```
 类的私有属性使用`private`修饰符，`jack`访问`secret`属性时会报错，`secret`属性只能在`Human`类种使用。这里增加一点说明，`name`和`age`属性默认是`public`，其实是这样：`public name: string;` `public age: number;`。
+## readonly修饰符
+```ts
+class Human {
+    name: string;
+    readonly age: number;
+    constructor(name: string, age: number) {
+        this.name = name;
+        this.age = age;
+    };
+}
+
+let jack = new Human('jack', 18)
+jack.age = 8  // 报错，age是只读的
+```
+用`readonly`关键字将属性设置为只读，只读属性必须在声明时或这早函数里被初始化。
 ## 类的继承
 ```ts
 class Animal {
@@ -108,3 +123,33 @@ let jack = new Human('jack', 18)
 console.log(jack.hand)  // ==> 报错
 ```
 `protected`修饰符雨`private`类似，但有一点不同，`protected`成员在它的子类仍然可以使用，而`private`就不可以。
+## 抽象类
+抽象类也可以叫做“爸爸类”：专门当作别的类的爸爸的类；也可以叫做“没有写完的类”：只描述有什么方法，并没有完全实现这些方法。
+```ts
+abstract class Animal {
+    abstract makeNoice(): void {};
+    move(): void {
+        // ...
+    };
+}
+let animal = new Animal() // 报错，因为Animal是抽象类，makeNoice方法并没有写完
+
+class Human extends Animal {
+    name: string;
+    age: number;
+    constructor(name: string, age: number) {
+        super();
+        this.name = name;
+        this.age = age;
+    };
+    makeNoice(): void {
+        console.log('说普通话');
+    }
+}
+
+let jack = new Human('jack', 18)
+```
+1. 抽象类要在声明时前面加`abstract`修饰符；
+2. 抽象类内部有一个方法，这个方法并不能在当时写全，那这个方法前面加一个`abstract`修饰符；
+3. 由如上述代码中，`new Animal()`实例化会报错，因为内部有方法并没有写全；
+4. 父类中如果有未写完的方法，那子类（非抽象类）中需要写完它；
