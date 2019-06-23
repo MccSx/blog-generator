@@ -8,7 +8,7 @@ categories: TypeScript学习
 ---
 # 函数
 函数其实也是对象，只是是一个特殊的对象，是**可以被调用（call）的对象**。
-# 函数类型
+## 函数类型
 ```ts
 function add(x: number, y: number): number {
     return x + y;
@@ -69,4 +69,55 @@ let fullName = buildName("Joseph", "Samuel", "Lucas", "MacKinzie");
 剩余参数会被当做个数不限的可选参数，可以一个都没有，同样也可以有任意个；在参数前加`...`，表示一个数组，冒号后面可以定义是个`string`类型数组还是`number`类型数组或其他类型数组；在函数体内可以使用这个数组。
 
 ## this和箭头函数
-this的值在函数被调用的时候才确定，也就是说，**this值其实是这个函数的参数，只有调用这个函数时才知道this的值是什么**；在TS里，this本质还是和JS里的this一样，不过在TS里，可以事先给this指定类型，或指定必须符合哪个接口或是哪个类。
+this的值在函数被调用的时候才确定，也就是说，**this值其实是这个函数的参数，只有调用这个函数时才知道this的值是什么**；在TS里，this本质还是和JS里的this一样，不过在TS里，可以事先给this指定类型，或指定必须符合哪个接口或是哪个类：
+```ts
+interface Human {
+    name: string;
+    age: number;
+}
+function fn(this: Human) {
+    console.log(this);
+}
+
+fn.call({name: 'jack', age: 18});  // pass
+fn();  // error
+```
+
+## 函数的重载
+```ts
+function add(n1: number, n2: number);
+function add(n1: string, n2: string);
+function add(n1, n2) {
+    return n1 + n2;
+}
+
+add(1, 2);  // pass  => 3
+add('a', 'b')  // pass  => 'ab'
+add(1, '2')  // error 两个参数不符合同时是string类型或者number类型
+```
+上述代码中，第一行和第二行表示对函数参数类型的定义，可以同时是`number``，或者同时是`string`，第三行开始的函数就是表示函数功能的具体实现。
+
+## 拓展
+#### 类型推断
+```ts
+function add(n1: string, n2: string) {
+    return n1 + n2;
+}
+
+let s = add('a' + 'b');
+console.log(s.split(''));  // pass
+```
+add函数在声明时并不需要声明返回值时什么类型，因为TS自己会推断函数的返回值是什么类型，所以当`s.split('')`时不会报错。
+#### 类型兼容
+```ts
+interface Human {
+    name: string;
+    age: number;
+}
+
+let human1: Human = {name: 'jack', age: 18, gender: 'male'}; //报错，因为对象不符合接口Human的定义，多了gender属性
+
+let x = {name: 'jack', age: 18, gender: 'male'};
+let human2: Human = x;  //这里不会报错，pass
+```
+至于这样设计的目的，应该是可以让我们少些一些代码。
