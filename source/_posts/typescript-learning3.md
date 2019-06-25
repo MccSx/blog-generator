@@ -120,7 +120,7 @@ let human1: Human = {name: 'jack', age: 18, gender: 'male'}; //报错，因为�
 let x = {name: 'jack', age: 18, gender: 'male'};
 let human2: Human = x;  //这里不会报错，pass
 ```
-至于这样设计的目的，应该是可以让我们少些一些代码。
+至于这样设计的目的，应该是可以让我们少些一些代码，节约类型的个数。
 #### Unsound
 ```typescript
 enum EventType { Mouse, Keyboard }
