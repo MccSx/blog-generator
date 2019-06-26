@@ -1,5 +1,5 @@
 ---
-title: typescript-泛型
+title: TypeScript-泛型
 date: 2019-06-20 23:18:18
 tags: 
  - JavaScript 
