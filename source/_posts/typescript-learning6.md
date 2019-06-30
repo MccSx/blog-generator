@@ -7,3 +7,11 @@ tags:
  - Vue
 categories: TypeScript学习
 ---
+## 项目构建
+```ts
+npx create-react-app my-app --typescript
+
+// or
+
+yarn create react-app my-app --typescript
+```
