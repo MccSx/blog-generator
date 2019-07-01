@@ -12,7 +12,7 @@ categories: TypeScript学习
 2. 创建一个新工程，如果已经在自己手动创建好的目录下：`vue create .`，如果没有手动创建目录：`vue create my-project-name`;
 3. 工程构建时，提示`Check the features needed for your project`时，选择了`Babel、TypeScript、CSS Pre-processors`;
 4. 提示`Use class-style component syntax?`时，选择yes；
-
+<!-- more -->
 ## 工程目录部分结构不同点
 src目录下，有三个`.ts`文件`main.ts` `shims-tsx.d.ts` `shims-vue.d.ts`，`main.ts`依然是入口文件，`shims-tsx.d.ts`文件主要方便在ts中使用jsx语法，`shims-tsx.d.ts`文件用于ts识别`.vue`文件；
 
