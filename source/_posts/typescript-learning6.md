@@ -1,5 +1,5 @@
 ---
-title: TypeScript+React入门ß
+title: TypeScript+React入门
 date: 2019-06-29 22:48:17入门
 tags: 
  - JavaScript 
@@ -20,6 +20,8 @@ yarn create react-app my-app --typescript
 ## 工程目录结构不同点
 1. 入口文件还是index文件，不过由之前的`index.jsx`变成了`index.tsx`；
 2. 所有的组件之前是`.jsx`文件，现在都是`.tsx`文件；
+
+<!-- more -->
 
 ## 简单写一个按钮组件
 ```ts
@@ -62,12 +64,15 @@ const App: React.FC = () => {
 
 export default App;
 ```
+
+#### 接收props
 如果此时在`Button`组件上传一个值：`<Button size="big">Click</Button>`，此时还未编译就会报错，报错提示：**不能将类型“{ children: string; size: string; }”分配给类型“IntrinsicAttributes...**，其实意思就是`Button`组件没有定义接收`size`属性。
 为了解决这个报错，那就要在`Button`组件内定义`size`属性，有下面几种方式：
 1. `class Button extends React.Component<{size: string}>...`，直接在`React.Component`后面加一个泛型，只是这种方式在有多个属性时就会写得很乱，不推荐；
 2. `type Props = {size: string;}` `class Button extends React.Component<Props>`，用`type`关键字声明一个类型别名；
 3. `interface Props = {size: string;}` `class Button extends React.Component<Props>`，直接定义一个接口，普遍用这种方式；
 
+#### constructor构造函数传参
 ```ts
 import React from 'react';
 import './Button.css'
@@ -91,6 +96,7 @@ export default Button;
 ```
 上述代码，`constructor`构造器中直接传入`props`参数会报错， 必须定义`props`参数是上述定义的`IProps`接口类型`constructor(props: IProps)`。
 
+#### 定义state内部属性类型
 ```ts
 import React from 'react';
 import './Button.css'
@@ -134,3 +140,46 @@ class Button extends React.Component<IProps, IState> {
     }
 }
 ```
+
+#### 使用函数回调
+```ts
+// App.tsx
+class App extends React.Component {
+  click(e: React.MouseEvent) {
+    console.log('click')
+    console.log(e)
+  }
+  render() {
+    return (
+      <div className="App">
+        <Button size="big" onClick={this.click}>Click</Button>
+      </div>
+    );
+  }
+}
+```
+```ts
+// Button.tsx
+interface IProps {
+    size: string;
+    onClick: React.MouseEventHandler;
+}
+interface IState {
+    n: number;
+}
+
+class Button extends React.Component<IProps, IState> {
+    constructor(props: IProps) {
+        super(props);
+        this.state = {
+            n: 1
+        }
+    }
+    render() {
+        return (
+            <div className="btn" onClick={this.props.onClick}>{this.props.children}{this.state.n}</div>
+        );
+    }
+}
+```
+如上述代码，`Button`组件中需要定义函数类型，由于是一个鼠标事件，定义为`React.MouseEventHandler`；在App文件中，在函数中使用`e`这个参数，也需要定义类型为`React.MouseEvent`
