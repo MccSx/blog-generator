@@ -8,3 +8,17 @@ categories:
  - TypeScript学习
  - React
 ---
+## 创建目录与远程仓库
+在GitHub上新建一个远程仓库，创建时添加readme文件，然后使用`git clone`把远程仓库克隆到本地。
+
+## npm初始化
+进入到本地的项目目录，使用`npm init -y`命令，在本地新建一个`package.json`文件。
+
+## 安装webpack
+使用`yarn add webpack webpack-cli --dev`命令，`dev`的意思就是安装到开发者的依赖里边，也就是在`package.json`文件中多了一个`devDependenceies`属性。
+
+## 新建lib/index.tsx文件
+在项目目录下，新建一个lib目录，lib目录下新建一个`index.tsx`文件，在文件内先随意写一行log代码。
+
+## 新建webpack.config.js
+在项目目录下新建一个`webpack.config.js`文件
