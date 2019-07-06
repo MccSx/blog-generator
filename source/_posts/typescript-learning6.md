@@ -182,4 +182,4 @@ class Button extends React.Component<IProps, IState> {
     }
 }
 ```
-如上述代码，`Button`组件中需要定义函数类型，由于是一个鼠标事件，定义为`React.MouseEventHandler`；在App文件中，在函数中使用`e`这个参数，也需要定义类型为`React.MouseEvent`
+如上述代码，`Button`组件中需要定义函数类型，由于是一个鼠标事件，定义为`React.MouseEventHandler`；在App文件中，在函数中使用`e`这个参数，也需要定义类型为`React.MouseEvent`。
