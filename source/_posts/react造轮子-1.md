@@ -30,7 +30,8 @@ module.exports = {
     },
     output: {
         path: path.resolve(__dirname, 'dist/lib'),
-        libray: 'XinChen UI'
+        libray: 'XinChen UI',
+        librayTarget: 'umd'
     },
     modules: {
         rules: [
@@ -43,5 +44,5 @@ module.exports = {
 }
 ```
 1. 配置`entry`，这表示项目代码入口在哪里，目前先定为lib目录下的`index.tsx`文件；
-2. 配置`output`，这表示项目打包后所放置代码的位置，这里的`libray`表示项目最终的名称叫什么；
+2. 配置`output`，这表示项目打包后所放置代码的位置，这里的`libray`表示项目最终的名称叫什么，`librayTarget`表示我们自己的库的格式是什么，；
 3. 配置`mudules.rules`，首先要处理`.tsx`文件，配置了`awesome-typescript-loader`这个loader，配置完后需要安装这个loader：`yarn add awesome-typescript-loader --dev`(安装所有的loader都是后面加`--dev`，因为loader只有开发者用到)
