@@ -49,3 +49,20 @@ module.exports = {
 3. 配置`mudules.rules`，首先要处理`.tsx`文件，配置了`awesome-typescript-loader`这个loader，配置完后需要安装这个loader：`yarn add awesome-typescript-loader --dev`(安装所有的loader都是后面加`--dev`，因为loader只有开发者用到)；
 4. 安装typescript：`yarn add typescript --dev`，添加`tsconfig.json`和`tslint.json`文件;
 5. 配置`mode`，一般`mode`值为`production`或者`development`，第一次先设置为`production`；
+
+## 安装webpack-dev-server与配置webpack.config.dev.js
+首先安装webpack-dev-server：`yarn add webpack-dev-server --dev`，这样就可以使用命令`npx webpack-devserver`来启动项目；
+安装html-webpack-plugin：`yarn add html-webpack-plugin --dev`，然后在`webpack.config.js`文件中添加下面代码：
+```js
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+modules.exports = {
+    // ...
+    plugins: [
+        new HtmlWebpackPlugin({
+            title: 'XinChen UI';
+            template: 'index.html';
+        })
+    ]
+}
+```
+这样使用命令`npx webpack-dev-server`，浏览器会启动localhost:8080域名，打开项目目录下的index.html文件，并且这个html文件会自动使用lib目录下的index.tsx文件作为js文件。
