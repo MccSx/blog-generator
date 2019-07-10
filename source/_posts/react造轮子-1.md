@@ -190,3 +190,47 @@ module.exports = Object.assign({}, base, {
 
 ## 打包生产.d.ts文件
 在`tsconfig.json`文件这加入这么一行：`"outDir": "dist"`，这样重新打包后，dist目录下就会有`index.d.ts`和`Button.d.ts`文件（其实`Button.d.ts`文件是不需要的），那如何去掉这个文件呢，在这里先挖个坑。
+
+## 配置Jest单元测试
+1. 运行：
+```js
+yarn add --dev jest babel-jest @babel/preset-env @babel/preset-react react-test-renderer
+```
+2. 在根目录下添加`.babelrc`文件，在文件内添加如下代码：
+```js
+{
+    "presets": [
+        "react-app"
+    ]
+}
+```
+3. 在`package.json`文件内的scripts中添加如下一行代码：
+```js
+"test": "cross-env NODE_ENV=test jest --config=jest.config.js --runInBand"
+```
+4. 添加`jest.config.js`文件，在文件内添加如下代码：
+```js
+module.exports = {
+    verbose: true,
+    clearMocks: false,
+    collectCoverage: false,
+    reporters: ["default"],
+    moduleFileExtensions: ['js', 'jsx', 'ts', 'tsx'],
+    moduleDirectories: ['node_modules'],
+    globals: {
+      'ts-jest': {
+        tsConfig: 'tsconfig.test.json',
+      },
+    },
+    moduleNameMapper: {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/test/__mocks__/file-mock.js",
+    },
+    testMatch: ['<rootDir>/**/__tests__/**/*.unit.(js|jsx|ts|tsx)'],
+    transform: {
+      "^.+unit\\.(js|jsx)$": "babel-jest",
+      '^.+\\.(ts|tsx)$': 'ts-jest',
+    },
+    setupFilesAfterEnv: ["<rootDir>test/setupTests.js"]
+}
+```
+5. 安装`ts-jest`：`yarn add ts-jest --dev`，并且创建test目录，并在这个目录下创建一个`setupTests.js`文件，目前这个文件暂时是空的。
