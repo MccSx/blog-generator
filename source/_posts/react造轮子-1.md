@@ -234,3 +234,10 @@ module.exports = {
 }
 ```
 5. 安装`ts-jest`：`yarn add ts-jest --dev`，并且创建test目录，并在这个目录下创建一个`setupTests.js`文件，目前这个文件暂时是空的。
+6. 安装`@types/jest`：`yarn add @types/jest --dev`;
+7. 在根目录下创建一个`tsconfig.test.json`文件，并在该文件下添加如下代码：
+```js
+{
+  "extends": "./tsconfig.json"
+}
+```
