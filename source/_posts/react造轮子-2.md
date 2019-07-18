@@ -8,3 +8,4 @@ categories:
  - TypeScript学习
  - React
 ---
+## 使用React.FunctionComponent与接收props
