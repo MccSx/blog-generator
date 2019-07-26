@@ -22,3 +22,4 @@ const Icon: React.FunctionComponent<IconProps> = (props) => {
 
 export default Icon;
 ```
+使用function定义一个组件时，需要使用`React.FunctionComponent`来指定组件的类型。
