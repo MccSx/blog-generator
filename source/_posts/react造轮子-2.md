@@ -22,4 +22,4 @@ const Icon: React.FunctionComponent<IconProps> = (props) => {
 
 export default Icon;
 ```
-使用function定义一个组件时，需要使用`React.FunctionComponent`来指定组件的类型。如果要定义组件的`props`是符合哪个接口，就需要在`React.FunctionComponent`后面加`<'已定义好的interface'>`。
+使用function定义一个组件时，需要使用`React.FunctionComponent`来指定组件的类型。如果要定义组件的`props`是符合哪个接口，就需要在`React.FunctionComponent`后面加`<'已定义好的interface'>`。这样定义后，在使用Icon组件时，name属性传错是就会自动报错。
