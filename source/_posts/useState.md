@@ -23,6 +23,8 @@ function App() {
 ReactDOM.render(<App />, rootElement);
 ```
 
+<!-- more -->
+
 - 首次渲染：`render <App />`，调用 App 函数，得到虚拟 div（一个对象），创建真实 div；
 - 当点击 button 时，会调用 setN 函数，再次 `render <App />`；
 - 再次调用 App 函数，得到虚拟 div，DOM diff 更新真实 div；
