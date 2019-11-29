@@ -454,3 +454,67 @@ const onClickChild = useMemo(() => {
 ```
 
 `useCallback(x => log(x), [m])`等价于 useMemo`(() => x => log(x), [m])`。
+
+# useRef
+
+## 目的
+
+如果需要一个值，在组件不断 render 时保持不变，初始化：`const count = useRef(0)`，读取：`count.current`。为什么需要这样读取呢？原因是为了保证两次使用`useRef`是同一个值（引用了一个对象地址，地址不会变）。
+`useRef`不能自动是的组件自动 render，因为这不符合 React 的理念，如果想有这个功能，就必须自己加功能，要监听 ref，当`ref.current`变化是，调用`setN`即可。
+
+# forwardRef
+
+# useImperativeHandle
+
+# 自定义 Hook
+
+```js
+const useList = () => {
+  const [list, setList] = useState(null);
+  useEffect(() => {
+    ajax("/list").then(list => {
+      setList(list);
+    });
+  }, []); // [] 确保只在第一次运行
+  return {
+    list: list,
+    setList: setList
+  };
+};
+export default useList;
+
+function ajax() {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => {
+      resolve([
+        { id: 1, name: "Frank" },
+        { id: 2, name: "Jack" },
+        { id: 3, name: "Alice" },
+        { id: 4, name: "Bob" }
+      ]);
+    }, 2000);
+  });
+}
+```
+
+```jsx
+function App() {
+  const { list, setList } = useList();
+  return (
+    <div className="App">
+      <h1>List</h1>
+      {list ? (
+        <ol>
+          {list.map(item => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ol>
+      ) : (
+        "加载中..."
+      )}
+    </div>
+  );
+}
+```
+
+如上述代码，`useList`这个 api 就是自定义的。
