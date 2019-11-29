@@ -324,8 +324,133 @@ function Child() {
 
 - 作为`componentDidMount`使用，[]作第二个参数；
 - 作为`componentDidUpdate`使用，可指定依赖；
-- 作为`componentWillUnmount`使用，用过return；
-以上三种用途可以同时存在
+- 作为`componentWillUnmount`使用，用过 return；
+  以上三种用途可以同时存在
 
 ## 特点
+
 如果同时存在多个`useEffect`，会按照出现次序执行。
+
+# useLayoutEffect
+
+## 布局副作用
+
+`useEffect`在浏览器渲染完成后执行，`useLayoutEffect`在浏览器渲染前执行。
+
+## 特点
+
+- `useLayoutEffect`总是比`useEffect`先执行
+- `useLayoutEffect`里的任务最好影响了 Layout
+
+## 经验
+
+为了用户体验，`useLayoutEffect`其实会增加 DOM 的渲染时间，优先使用`useEffect`。
+
+# useMemo
+
+## 如何理解 useMemo
+
+首先要理解`useMemo`，必须要先将`React.memo`，示例代码如下：
+
+```jsx
+function App() {
+  const [n, setN] = React.useState(0);
+  const [m, setM] = React.useState(0);
+  const onClick = () => {
+    setN(n + 1);
+  };
+
+  return (
+    <div className="App">
+      <div>
+        <button onClick={onClick}>update n {n}</button>
+      </div>
+      {/* <Child data={m} /> */}
+      <Child2 data={m} />
+    </div>
+  );
+}
+
+function Child(props) {
+  // 假设这里有大量代码
+  console.log("child 执行了");
+  return <div>child: {props.data}</div>;
+}
+
+const Child2 = React.memo(Child);
+```
+
+这样使用了`React.memo`的`Child2`组件，在`n`变化时，`Child2`组件并不会重新`render`。
+但是，`React.memo`还是有一个问题，改造上述代码如下：
+
+```jsx
+function App() {
+  // ...
+  const onClickChild = () => {
+    console.log(m);
+  };
+
+  retrun(
+    <div className="App">
+      <Child2 data={m} onClick={onClickChild} />
+    </div>
+  );
+}
+
+// ...
+```
+
+这样的话，即使`Child2`组件使用了`React.memo`，`Child2`组件还是会重新`render`，原因其实就是`onClickChild`被赋值了一个新的函数，新旧函数功能一样，但是地址是不一样的。
+那如何解决这样的问题呢？所以出现了`useMemo`，修改代码如下：
+
+```jsx
+function App() {
+  // ...
+  const onClickChild = useMemo(() => {
+    const fn = div => {
+      console.log("on click child, m: " + m);
+      console.log(div);
+    };
+    return fn;
+  }, [m]);
+
+  retrun(
+    <div className="App">
+      <Child2 data={m} onClick={onClickChild} />
+    </div>
+  );
+}
+
+// ...
+```
+
+## useMemo 特点
+
+- 第一个参数是一个函数：`() => value`；
+- 第二个参数是依赖`[m,n]`；
+- 只有当依赖变化是，才会计算出新的`value`；
+- 如果依赖不变，那么就重用之前的`value`；
+
+## useMemo 注意点
+
+如果上述`value`是一个函数，那可能就会写成这样：`useMemo(() => (x) => console.log(x))`，这是一个返回函数的函数。那会不会觉得很难用呢？于是出现了`useCallback`。
+
+# useCallback
+
+修改上述代码，使用`useCallback`来代替`useMemo`。
+
+```jsx
+// const onClickChild = useMemo(() => {
+//   const fn = div => {
+//     console.log("on click child, m: " + m);
+//     console.log(div);
+//   };
+//   return fn;
+// }, [m]);
+
+const onClickChild = useMemo(() => {
+  console.log("on click child, m: " + m);
+}, [m]);
+```
+
+`useCallback(x => log(x), [m])`等价于 useMemo`(() => x => log(x), [m])`。
