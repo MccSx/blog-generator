@@ -12,7 +12,7 @@ categories:
 ## 使用状态
 
 ```js
-const [n, setN] = React.useStaet(0);
+const [n, setN] = React.useState(0);
 const [user, setUser] = React.useState({ name: "F" });
 ```
 
